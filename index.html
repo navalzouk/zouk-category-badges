@@ -1,0 +1,591 @@
+<title>Zouk Category Badges</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg:            #f5f2ec;
+    --surface:       #fdfcfa;
+    --surface-2:     #efebe2;
+    --ink:           #211c1a;
+    --ink-2:         #5c5450;
+    --muted:         #928a83;
+    --border:        rgba(33,28,26,0.12);
+    --border-strong: rgba(33,28,26,0.22);
+    --accent:        #7a2333;
+    --accent-ink:    #ffffff;
+    --chip-bs:       #2a78d6;
+    --chip-bs-tint:  #e2edfa;
+    --chip-bs-ink:   #184f95;
+    --chip-fs:       #eb6834;
+    --chip-fs-tint:  #fbe6db;
+    --chip-fs-ink:   #a8451c;
+    --chip-nl:       #1baf7a;
+    --chip-nl-tint:  #dcf3ea;
+    --chip-nl-ink:   #0a6644;
+    --chip-bis:      #eda100;
+    --chip-bis-tint: #fbecd1;
+    --chip-bis-ink:  #8a5f00;
+    --shadow:        0 1px 2px rgba(33,28,26,0.06), 0 6px 20px -8px rgba(33,28,26,0.18);
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --slab: "Zilla Slab", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg:            #16130f;
+      --surface:       #201b17;
+      --surface-2:     #2a231d;
+      --ink:           #f6f1ea;
+      --ink-2:         #c9bfb5;
+      --muted:         #8f857b;
+      --border:        rgba(246,241,234,0.10);
+      --border-strong: rgba(246,241,234,0.20);
+      --accent:        #e2637a;
+      --accent-ink:    #201b17;
+      --chip-bs:       #3987e5;
+      --chip-bs-tint:  #1c2c3f;
+      --chip-bs-ink:   #6db3f5;
+      --chip-fs:       #d95926;
+      --chip-fs-tint:  #3a2417;
+      --chip-fs-ink:   #f0956a;
+      --chip-nl:       #199e70;
+      --chip-nl-tint:  #142d24;
+      --chip-nl-ink:   #3fd6a3;
+      --chip-bis:      #c98500;
+      --chip-bis-tint: #33270f;
+      --chip-bis-ink:  #f0b746;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:            #16130f;
+    --surface:       #201b17;
+    --surface-2:     #2a231d;
+    --ink:           #f6f1ea;
+    --ink-2:         #c9bfb5;
+    --muted:         #8f857b;
+    --border:        rgba(246,241,234,0.10);
+    --border-strong: rgba(246,241,234,0.20);
+    --accent:        #e2637a;
+    --accent-ink:    #201b17;
+    --chip-bs:       #3987e5;
+    --chip-bs-tint:  #1c2c3f;
+    --chip-bs-ink:   #6db3f5;
+    --chip-fs:       #d95926;
+    --chip-fs-tint:  #3a2417;
+    --chip-fs-ink:   #f0956a;
+    --chip-nl:       #199e70;
+    --chip-nl-tint:  #142d24;
+    --chip-nl-ink:   #3fd6a3;
+    --chip-bis:      #c98500;
+    --chip-bis-tint: #33270f;
+    --chip-bis-ink:  #f0b746;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 26px 24px 70px; }
+
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .mark { display: flex; align-items: center; gap: 10px; }
+  .mark .tag {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: 3px 9px 4px;
+    border-radius: 3px;
+  }
+  h1 {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: inline;
+  }
+  .meta { color: var(--muted); font-size: 12.5px; }
+
+  /* ---------- Filter row ---------- */
+  .filterbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .spacer { flex: 1; }
+  .resultcount { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+
+  .textfilter {
+    position: relative;
+    width: 150px;
+  }
+  .textfilter svg {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    width: 13px; height: 13px; color: var(--muted); pointer-events: none;
+  }
+  .textfilter input {
+    width: 100%;
+    padding: 9px 10px 9px 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 13.5px;
+    font-family: var(--sans);
+  }
+  .textfilter input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+  .msfilter { position: relative; }
+  .msbutton {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: var(--sans);
+    cursor: pointer;
+  }
+  .msbutton:hover { border-color: var(--accent); }
+  .msbutton[aria-expanded="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+  .msbutton .lbl { color: var(--muted); font-weight: 500; }
+  .msbutton .count {
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 11px; font-weight: 700; border-radius: 999px;
+    min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center;
+    padding: 0 5px;
+  }
+  .msbutton svg { width: 12px; height: 12px; color: var(--muted); transition: transform 0.12s ease; }
+  .msbutton[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+  .mspanel {
+    position: absolute; top: calc(100% + 6px); left: 0; z-index: 20;
+    width: 260px; max-height: 360px;
+    background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .mspanel[hidden] { display: none; }
+  .mssearch {
+    padding: 8px; border-bottom: 1px solid var(--border);
+  }
+  .mssearch input {
+    width: 100%; padding: 6px 9px; border-radius: 6px; border: 1px solid var(--border-strong);
+    background: var(--bg); color: var(--ink); font-size: 13px; font-family: var(--sans);
+  }
+  .msactions {
+    display: flex; gap: 12px; padding: 7px 12px; border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .msactions button {
+    background: none; border: none; color: var(--accent); font-weight: 600; cursor: pointer; padding: 0;
+    font-family: var(--sans); font-size: 12px;
+  }
+  .msoptions { overflow-y: auto; padding: 4px; }
+  .msoption {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 9px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+  .msoption:hover { background: var(--surface-2); }
+  .msoption input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+  .msoption .swatch { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .msoption .n { color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; font-size: 12px; }
+  .msempty { padding: 14px; color: var(--muted); font-size: 12.5px; text-align: center; }
+
+  /* ---------- Table ---------- */
+  .tablecard {
+    border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .tablescroll { overflow-x: auto; }
+  table.sku-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.sku-table th {
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--muted); font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border);
+    white-space: nowrap; background: var(--surface-2); position: sticky; top: 0;
+  }
+  table.sku-table th.sortable {
+    cursor: pointer; user-select: none;
+  }
+  table.sku-table th.sortable:hover { color: var(--ink); }
+  table.sku-table th.sortable .arrows {
+    display: inline-flex; flex-direction: column; margin-left: 5px; vertical-align: middle; gap: 1px;
+  }
+  table.sku-table th.sortable .arrows svg { width: 8px; height: 8px; display: block; color: var(--border-strong); }
+  table.sku-table th.sortable[data-dir="asc"] .arrows svg.up { color: var(--accent); }
+  table.sku-table th.sortable[data-dir="desc"] .arrows svg.down { color: var(--accent); }
+  table.sku-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  table.sku-table tbody tr:last-child td { border-bottom: none; }
+  table.sku-table tbody tr:hover { background: var(--surface-2); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.sku-code { font-family: var(--mono); font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+  td.name { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  td.cat { color: var(--ink-2); white-space: nowrap; }
+  .npd-pill {
+    font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; letter-spacing: 0.03em;
+    background: var(--surface-2); color: var(--muted); border: 1px solid var(--border);
+  }
+  .badge-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .badge-chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .b-Best-Seller   { background: var(--chip-bs-tint);  color: var(--chip-bs-ink); }
+  .b-Best-Seller .dot   { background: var(--chip-bs); }
+  .b-Fast-Selling  { background: var(--chip-fs-tint);  color: var(--chip-fs-ink); }
+  .b-Fast-Selling .dot  { background: var(--chip-fs); }
+  .b-New-Launch    { background: var(--chip-nl-tint);  color: var(--chip-nl-ink); }
+  .b-New-Launch .dot    { background: var(--chip-nl); }
+  .b-Back-in-Stock { background: var(--chip-bis-tint); color: var(--chip-bis-ink); }
+  .b-Back-in-Stock .dot { background: var(--chip-bis); }
+  .b-Unbadged { color: var(--muted); font-size: 12px; }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty .big { font-size: 15px; color: var(--ink-2); margin-bottom: 4px; }
+
+  footer { margin-top: 20px; color: var(--muted); font-size: 11.5px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="mark"><span class="tag">Zouk</span><h1>Category Badge Dashboard</h1></div>
+    <div class="meta">Data as of 21 Aug 2026 · 233 SKUs · 60 categories</div>
+  </div>
+
+  <div class="filterbar">
+    <div class="msfilter" id="ms-category"></div>
+    <div class="msfilter" id="ms-stage"></div>
+    <div class="msfilter" id="ms-badge"></div>
+    <div class="textfilter">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="skuSearch" placeholder="SKU…" aria-label="Filter by SKU">
+    </div>
+    <div class="textfilter">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="productSearch" placeholder="Product…" aria-label="Filter by product name">
+    </div>
+    <div class="spacer"></div>
+    <div class="resultcount" id="resultCount"></div>
+  </div>
+
+  <div class="tablecard">
+    <div class="tablescroll">
+      <table class="sku-table">
+        <thead><tr id="theadRow"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="emptyState" style="display:none;">
+      <div class="big">No SKUs match these filters</div>
+      <div>Try selecting more categories or badges.</div>
+    </div>
+  </div>
+
+  <footer>Sources: Active Inventory feed (1 Jun – 21 Aug 2026), dated Sale Orders export, Zouk Product Dictionary (SKU Master).</footer>
+</div>
+
+<script>
+const DATA = [{"sku": "S-ZU-32", "name": "WavBeach Sling Bag", "category": "Sling Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 6.45, "qty30": 142.0, "doh": 151.2, "inv": 976.0, "activeDays30": 22, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "S-ZK-15", "name": "WavBeach Women's Office Bag", "category": "Women's Office Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 9.57, "qty30": 287.0, "doh": 154.1, "inv": 1474.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-GO02", "name": "GeoOptics Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.17, "qty30": 121.0, "doh": 134.5, "inv": 561.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "S-ZK-30", "name": "FloMotif Women's Office Bag", "category": "Women's Office Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 28.89, "qty30": 780.0, "doh": 15.7, "inv": 454.0, "activeDays30": 27, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "LP01ZIPLP015", "name": "Ikat Wave Laptop Bag", "category": "Laptop Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.43, "qty30": 33.0, "doh": 340.1, "inv": 488.0, "activeDays30": 23, "activeDays7": 7, "restocked7": true, "bucket": "Phased Out"}, {"sku": "S-ZU-16", "name": "Mughal Motif Women's Office Bag", "category": "Women's Office Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 10.73, "qty30": 322.0, "doh": 43.0, "inv": 461.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "S-ZU-27", "name": "FloMotif Sling Bag", "category": "Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 19.87, "qty30": 596.0, "doh": 66.8, "inv": 1327.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-IGRD051", "name": "Ikat GreRed Women's Office Bag", "category": "Women's Office Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 10.77, "qty30": 323.0, "doh": 45.4, "inv": 489.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-LL004", "name": "Lattice Lace Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.93, "qty30": 29.0, "doh": 241.0, "inv": 466.0, "activeDays30": 15, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-LL04", "name": "Lattice Lace Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 8.0, "qty30": 240.0, "doh": 184.4, "inv": 1475.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "S-ZU-35", "name": "Mughal Motif Sling Bag", "category": "Sling Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 6.77, "qty30": 203.0, "doh": 73.0, "inv": 494.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-KG-081", "name": "Kutch Gamthi Women's Office Bag", "category": "Women's Office Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 9.6, "qty30": 288.0, "doh": 49.5, "inv": 475.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-FL08", "name": "FloLov Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.9, "qty30": 147.0, "doh": 104.3, "inv": 511.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-MMP-100", "name": "Multicolor Mandala Print Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 5.5, "qty30": 33.0, "doh": 103.1, "inv": 567.0, "activeDays30": 6, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "S-ZU-22", "name": "Ikat GreRe Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.23, "qty30": 93.0, "doh": 118.5, "inv": 501.0, "activeDays30": 22, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-RIPM81", "name": "Royal Indian Peacock Motif Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 8.59, "qty30": 249.0, "doh": 82.3, "inv": 707.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-MAM-045", "name": "Mughal Art Multicolor Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 6.93, "qty30": 208.0, "doh": 101.5, "inv": 704.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-MAM030", "name": "Mughal Art Multicolor Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.25, "qty30": 102.0, "doh": 107.5, "inv": 457.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-MMP030", "name": "Multicolor Mandala Print Sling Bag", "category": "Sling Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 6.28, "qty30": 182.0, "doh": 72.2, "inv": 453.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-CBK-080", "name": "Chittoor Blue Kalamkari Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.0, "qty30": 120.0, "doh": 242.8, "inv": 971.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-KN-081", "name": "Kolkata Nouveau Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.11, "qty30": 40.0, "doh": 224.7, "inv": 473.0, "activeDays30": 19, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZSSB01-FM01", "name": "FloMotif Structured Shoulder Bag", "category": "Structured Shoulder Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 10.0, "qty30": 10.0, "doh": 50.6, "inv": 506.0, "activeDays30": 1, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZSSB01-JFB01", "name": "Jaipur Fresco Blue Structured Shoulder Bag", "category": "Structured Shoulder Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 1.0, "qty30": 1.0, "doh": 457.0, "inv": 457.0, "activeDays30": 1, "activeDays7": 0, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZSSB01-RIP01", "name": "Royal Indian Peacock Motif Structured Shoulder Bag", "category": "Structured Shoulder Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 20.09, "qty30": 462.0, "doh": 118.2, "inv": 2374.0, "activeDays30": 23, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSSB01-MCM01", "name": "Multicolor Mandala Print Structured Shoulder Bag", "category": "Structured Shoulder Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 21.43, "qty30": 643.0, "doh": 21.1, "inv": 452.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSSB01-PP01", "name": "Paisley Print Structured Shoulder Bag", "category": "Structured Shoulder Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 22.36, "qty30": 559.0, "doh": 21.5, "inv": 481.0, "activeDays30": 25, "activeDays7": 2, "restocked7": false, "bucket": "Live"}, {"sku": "ZSTB03-MAM01", "name": "Mughal Art Multicolor Shoulder Tote Bag", "category": "Shoulder Tote Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.29, "qty30": 9.0, "doh": 365.6, "inv": 470.0, "activeDays30": 7, "activeDays7": 1, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZOB-SMJM001", "name": "Sheesh Mahal Jaali Motif Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.22, "qty30": 76.0, "doh": 106.8, "inv": 451.0, "activeDays30": 18, "activeDays7": 0, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZSB02-RIPM001", "name": "Royal Indian Peacock Motif U-Shaped Sling Bag", "category": "U-shaped Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.13, "qty30": 95.0, "doh": 138.2, "inv": 571.0, "activeDays30": 23, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB02-MMP001", "name": "Multicolor Mandala Print U-Shaped Sling Bag", "category": "U-shaped Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 450.0, "activeDays30": 0, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB02-PP001", "name": "Paisley Print U-Shaped Sling Bag", "category": "U-shaped Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.89, "qty30": 74.0, "doh": 225.4, "inv": 878.0, "activeDays30": 19, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-BK01", "name": "Bidri Kaiser Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 6.04, "qty30": 157.0, "doh": 75.2, "inv": 454.0, "activeDays30": 26, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-TN01", "name": "Taj Nakashi Sling Bag", "category": "Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 11.96, "qty30": 299.0, "doh": 39.3, "inv": 470.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-BK-081", "name": "Bidri Kaiser Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 5.2, "qty30": 156.0, "doh": 90.0, "inv": 468.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-PP-060", "name": "Paisley Print Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.67, "qty30": 80.0, "doh": 170.2, "inv": 454.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOB01-JB05", "name": "Jet Black Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.7, "qty30": 47.0, "doh": 111.7, "inv": 525.0, "activeDays30": 10, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZBT01-MM001", "name": "Multicolor Mandala Print Baguette", "category": "Baguette", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 14.77, "qty30": 384.0, "doh": 30.7, "inv": 453.0, "activeDays30": 26, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBT01-BK001", "name": "Bidri Kaiser Baguette", "category": "Baguette", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 11.14, "qty30": 156.0, "doh": 53.5, "inv": 596.0, "activeDays30": 14, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZBT01-PP001", "name": "Paisley Print Baguette", "category": "Baguette", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 15.24, "qty30": 381.0, "doh": 34.7, "inv": 529.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBT01-KG001", "name": "Kutch Gamthi Baguette", "category": "Baguette", "badge": "Back in Stock", "rank": 3, "npd": "EPD", "drr": 5.5, "qty30": 11.0, "doh": 89.5, "inv": 492.0, "activeDays30": 2, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZBT01-FM001", "name": "FloMotif Baguette", "category": "Baguette", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 12.92, "qty30": 323.0, "doh": 98.5, "inv": 1273.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBT01-GW001", "name": "Gwalior Weaves Baguette", "category": "Baguette", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 9.17, "qty30": 110.0, "doh": 145.2, "inv": 1331.0, "activeDays30": 12, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-NC", "name": "Nawabi Couture Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 58.96, "qty30": 1651.0, "doh": 14.9, "inv": 877.0, "activeDays30": 28, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-MCM01", "name": "Multicolor Mandala Print Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 89.73, "qty30": 2692.0, "doh": 44.5, "inv": 3989.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-AAB", "name": "Aravalli Abstract Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 18.29, "qty30": 311.0, "doh": 26.0, "inv": 476.0, "activeDays30": 17, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-WB01", "name": "WavBeach Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 21.19, "qty30": 551.0, "doh": 22.2, "inv": 470.0, "activeDays30": 26, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-CBK01", "name": "Chittoor Blue Kalamkari Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 20.68, "qty30": 517.0, "doh": 58.7, "inv": 1213.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-GW01", "name": "Gwalior Weaves Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 45.13, "qty30": 1354.0, "doh": 66.4, "inv": 2998.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-KB01", "name": "Kovil Blue Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 16.4, "qty30": 492.0, "doh": 58.2, "inv": 954.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-KTG01", "name": "Kutch Gamthi Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 19.65, "qty30": 393.0, "doh": 29.3, "inv": 575.0, "activeDays30": 20, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-TN01", "name": "Taj Nakashi Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 49.5, "qty30": 1188.0, "doh": 9.3, "inv": 458.0, "activeDays30": 24, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-MM01", "name": "Mughal Motif Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 45.35, "qty30": 1179.0, "doh": 10.7, "inv": 484.0, "activeDays30": 26, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-BK01", "name": "Bidri Kaiser Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 12.43, "qty30": 373.0, "doh": 37.6, "inv": 468.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-FM01", "name": "FloMotif Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 25.47, "qty30": 764.0, "doh": 107.3, "inv": 2732.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-MAM01", "name": "Mughal Art Multicolor Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 26.11, "qty30": 705.0, "doh": 17.3, "inv": 451.0, "activeDays30": 27, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-LL01", "name": "Lattice Lace Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 8.03, "qty30": 241.0, "doh": 151.5, "inv": 1217.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-IGR01", "name": "Ikat GreRe Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 69.4, "qty30": 2082.0, "doh": 9.3, "inv": 642.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-TG01", "name": "Taj Guldasta Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 9.64, "qty30": 270.0, "doh": 58.4, "inv": 563.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZLZLS-TG", "name": "Taj Guldasta L-Zippered Laptop Sleeve", "category": "L-zippered Laptop Sleeve", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.12, "qty30": 53.0, "doh": 215.1, "inv": 456.0, "activeDays30": 25, "activeDays7": 6, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZOTB-FF009", "name": "FloMotif Office Tote Bag", "category": "Office Tote Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.47, "qty30": 134.0, "doh": 101.4, "inv": 453.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-BK01", "name": "Bidri Kaiser Statement Office Bag", "category": "Statement Office Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 4.76, "qty30": 100.0, "doh": 129.6, "inv": 617.0, "activeDays30": 21, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-FM01", "name": "FloMotif Statement Office Bag", "category": "Statement Office Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 8.03, "qty30": 241.0, "doh": 185.6, "inv": 1491.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-KN01", "name": "Kolkata Nouveau Statement Office Bag", "category": "Statement Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.17, "qty30": 35.0, "doh": 489.4, "inv": 571.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-KG01", "name": "Kutch Gamthi Statement Office Bag", "category": "Statement Office Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 3.03, "qty30": 91.0, "doh": 238.4, "inv": 723.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-MM01", "name": "Multicolor Mandala Print Statement Office Bag", "category": "Statement Office Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 2.27, "qty30": 68.0, "doh": 200.7, "inv": 455.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB-GW-085", "name": "Gwalior Weaves Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 3.93, "qty30": 114.0, "doh": 120.3, "inv": 473.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOB-BL01", "name": "Bristel Statement Office Bag", "category": "Statement Office Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 4.3, "qty30": 129.0, "doh": 301.4, "inv": 1296.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-AA", "name": "Aravalli Abstract Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 3.9, "qty30": 117.0, "doh": 129.5, "inv": 505.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-BK", "name": "Bidri Kaiser Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 14.2, "qty30": 426.0, "doh": 31.7, "inv": 450.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-FM", "name": "Flomotif Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 7.33, "qty30": 44.0, "doh": 73.4, "inv": 538.0, "activeDays30": 6, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-GO", "name": "GeoOptics Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 7.39, "qty30": 133.0, "doh": 78.6, "inv": 581.0, "activeDays30": 18, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-KN", "name": "Kolkata Nouveau Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 6.36, "qty30": 178.0, "doh": 70.9, "inv": 451.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-MCM", "name": "Multicolor Mandala Print Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 11.37, "qty30": 341.0, "doh": 42.6, "inv": 484.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-RIPM", "name": "Royal Indian Peacock Motif Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.43, "qty30": 93.0, "doh": 155.4, "inv": 688.0, "activeDays30": 21, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZETB-TG", "name": "Taj Guldasta Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 15.67, "qty30": 470.0, "doh": 94.4, "inv": 1479.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZETB-WB", "name": "WavBeach Everyday Tote bag", "category": "Everyday Tote Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 8.55, "qty30": 248.0, "doh": 190.5, "inv": 1629.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZDDP-FM", "name": "FloMotif Dome Daypack", "category": "Dome Daypack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.86, "qty30": 136.0, "doh": 207.1, "inv": 1006.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZDDP-KG", "name": "Kutch Gamthi Dome Daypack", "category": "Dome Daypack", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 3.29, "qty30": 92.0, "doh": 281.5, "inv": 925.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZDDP-LL", "name": "Lattice Lace Dome Daypack", "category": "Dome Daypack", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 1.0, "qty30": 1.0, "doh": 470.0, "inv": 470.0, "activeDays30": 1, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZDDP-MM", "name": "Multicolor Mandala Print Dome Daypack", "category": "Dome Daypack", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.53, "qty30": 106.0, "doh": 143.5, "inv": 507.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBTB-KB", "name": "Kashmir Blooms Book Tote", "category": "Book Tote", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 18.0, "qty30": 54.0, "doh": 43.4, "inv": 781.0, "activeDays30": 3, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZBSH-FM", "name": "SAK Satchel - Flomotif", "category": "SAK Satchel", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 17.6, "qty30": 88.0, "doh": 30.0, "inv": 528.0, "activeDays30": 5, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZBSH-KB", "name": "SAK Satchel - Kashmir Blooms", "category": "SAK Satchel", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 13.12, "qty30": 328.0, "doh": 38.0, "inv": 498.0, "activeDays30": 25, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZBSH-WB", "name": "SAK Satchel - WavBeach", "category": "SAK Satchel", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 4.6, "qty30": 138.0, "doh": 98.0, "inv": 451.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBSH-MGM", "name": "SAK Satchel - Mughal Motif", "category": "SAK Satchel", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 5.78, "qty30": 133.0, "doh": 91.8, "inv": 531.0, "activeDays30": 23, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZBTB-FM", "name": "Flomotif Book Tote", "category": "Book Tote", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 2.18, "qty30": 37.0, "doh": 927.2, "inv": 2018.0, "activeDays30": 17, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZLH-BK", "name": "Bidri kaiser Luna Handbag", "category": "Luna Handbag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.0, "qty30": 6.0, "doh": 153.3, "inv": 460.0, "activeDays30": 2, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZLH-KN", "name": "Kolkata Nouveau Luna Handbag", "category": "Luna Handbag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 2.19, "qty30": 59.0, "doh": 213.7, "inv": 467.0, "activeDays30": 27, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZLH-MAM", "name": "Mughal Art Multicolor Luna Handbag", "category": "Luna Handbag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 2.66, "qty30": 77.0, "doh": 218.4, "inv": 580.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCW-FM", "name": "Flomotif Chain Wallet (CFC)", "category": "Chain Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.48, "qty30": 67.0, "doh": 284.5, "inv": 706.0, "activeDays30": 27, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZCW-PP", "name": "Paisley Print Chain Wallet (CFC)", "category": "Chain Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 2.19, "qty30": 57.0, "doh": 207.1, "inv": 454.0, "activeDays30": 26, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-BK", "name": "Bidri Kaiser Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 2.57, "qty30": 77.0, "doh": 584.0, "inv": 1499.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-FM", "name": "Flomotif Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 5.13, "qty30": 154.0, "doh": 427.0, "inv": 2192.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-KB", "name": "Kovil Blue Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 3.31, "qty30": 96.0, "doh": 230.5, "inv": 763.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-KG", "name": "Kutch Gamthi Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 4.12, "qty30": 33.0, "doh": 121.2, "inv": 500.0, "activeDays30": 8, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZCZW-MMD", "name": "Multicolor Mandala Print Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 3.44, "qty30": 55.0, "doh": 305.2, "inv": 1049.0, "activeDays30": 16, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZCZW-PP", "name": "Paisley Print Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.17, "qty30": 65.0, "doh": 559.4, "inv": 1212.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB-FM", "name": "Flomotif Statement Backpack", "category": "Statement Backpack", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 10.29, "qty30": 216.0, "doh": 56.1, "inv": 577.0, "activeDays30": 21, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB-MMD", "name": "Multicolor Mandala Print Statement Backpack", "category": "Statement Backpack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 15.0, "qty30": 315.0, "doh": 31.8, "inv": 477.0, "activeDays30": 21, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-WB", "name": "WavBeach Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.53, "qty30": 46.0, "doh": 515.2, "inv": 790.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-MAM", "name": "Mughal Art Multicolor Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.9, "qty30": 55.0, "doh": 394.9, "inv": 749.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-BK", "name": "Bidri Kaiser Office Backpack", "category": "Office Backpack", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 10.24, "qty30": 174.0, "doh": 45.8, "inv": 469.0, "activeDays30": 17, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-BRI", "name": "Bristel Office Backpack", "category": "Office Backpack", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 3.71, "qty30": 104.0, "doh": 182.8, "inv": 679.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-FM", "name": "FloMotif Office Backpack", "category": "Office Backpack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 31.65, "qty30": 728.0, "doh": 37.7, "inv": 1193.0, "activeDays30": 23, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-JB", "name": "Jet Black Office Backpack", "category": "Office Backpack", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 11.97, "qty30": 359.0, "doh": 37.9, "inv": 454.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-KMB", "name": "Kashmir Blooms Office Backpack", "category": "Office Backpack", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 17.74, "qty30": 479.0, "doh": 26.2, "inv": 464.0, "activeDays30": 27, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZBOB-NC", "name": "Nawabi Couture Office Backpack", "category": "Office Backpack", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 5.0, "qty30": 45.0, "doh": 93.0, "inv": 465.0, "activeDays30": 9, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZOB01-IGR050", "name": "Ikat GreRe Women's Office Bag", "category": "Women's Office Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.38, "qty30": 31.0, "doh": 191.2, "inv": 456.0, "activeDays30": 13, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSTSB-FM", "name": "FloMotif Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 0.8, "qty30": 20.0, "doh": 581.2, "inv": 465.0, "activeDays30": 25, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZSTSB-JD", "name": "Jodhpur Damask Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.86, "qty30": 52.0, "doh": 248.2, "inv": 461.0, "activeDays30": 28, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZSTSB-MMD", "name": "Multicolor Mandala Print Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 1.69, "qty30": 27.0, "doh": 266.7, "inv": 450.0, "activeDays30": 16, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZSTSB-PP", "name": "Paisley Print Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.8, "qty30": 16.0, "doh": 650.0, "inv": 520.0, "activeDays30": 20, "activeDays7": 2, "restocked7": false, "bucket": "Live"}, {"sku": "ZSTSB-QS", "name": "Qutub Stripes Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 1.33, "qty30": 8.0, "doh": 348.0, "inv": 464.0, "activeDays30": 6, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZSTSB-RIP", "name": "Royal Indian Peacock Motif Statement Sling Bag", "category": "Statement Sling Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 0.9, "qty30": 27.0, "doh": 574.4, "inv": 517.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCBB-NC", "name": "Nawabi Couture Classic Business Bag", "category": "Classic Business Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 464.0, "activeDays30": 0, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZLCB-MMD", "name": "Multicolor Mandala Print Lunch Bag", "category": "Lunch Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 19.63, "qty30": 589.0, "doh": 24.1, "inv": 474.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSB01-NC", "name": "Nawabi Couture Sling Bag", "category": "Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.0, "qty30": 29.0, "doh": 928.0, "inv": 928.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-BK", "name": "Bidri Kaiser Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 22.83, "qty30": 685.0, "doh": 41.7, "inv": 953.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-FL", "name": "FloLov Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 10.0, "qty30": 250.0, "doh": 49.4, "inv": 494.0, "activeDays30": 25, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-FM", "name": "FloMotif Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 19.23, "qty30": 577.0, "doh": 56.2, "inv": 1080.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-GO", "name": "GeoOptics Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 11.8, "qty30": 354.0, "doh": 327.4, "inv": 3863.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-GW", "name": "Gwalior Weaves Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 11.45, "qty30": 332.0, "doh": 60.0, "inv": 687.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-KG", "name": "Kutch Gamthi Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 36.17, "qty30": 1085.0, "doh": 20.4, "inv": 737.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-NC", "name": "Nawabi Couture Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 14.7, "qty30": 441.0, "doh": 164.9, "inv": 2424.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-RIP", "name": "Royal Indian Peacock Motif Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 5.68, "qty30": 108.0, "doh": 83.4, "inv": 474.0, "activeDays30": 19, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-TW", "name": "Tidal Wave Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 11.65, "qty30": 303.0, "doh": 51.1, "inv": 595.0, "activeDays30": 26, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZHSB-WB", "name": "WavBeach Harmony Sling Bag", "category": "Harmony Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 8.96, "qty30": 224.0, "doh": 116.0, "inv": 1039.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOOSB-FL", "name": "FloLov OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 5.72, "qty30": 103.0, "doh": 95.4, "inv": 546.0, "activeDays30": 18, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOOSB-FM", "name": "FloMotif OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Back in Stock", "rank": 4, "npd": "EPD", "drr": 5.44, "qty30": 49.0, "doh": 91.1, "inv": 496.0, "activeDays30": 9, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZOOSB-KG", "name": "Kutch Gamthi OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Back in Stock", "rank": 5, "npd": "EPD", "drr": 5.31, "qty30": 69.0, "doh": 84.8, "inv": 450.0, "activeDays30": 13, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZOOSB-MAM", "name": "Mughal Art Multicolor OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 5.56, "qty30": 100.0, "doh": 86.8, "inv": 482.0, "activeDays30": 18, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZOOSB-NC", "name": "Nawabi Couture OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 10.09, "qty30": 111.0, "doh": 73.6, "inv": 743.0, "activeDays30": 11, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZOOSB-PP", "name": "Paisley Print OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 19.52, "qty30": 488.0, "doh": 25.1, "inv": 489.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZOOSB-TW", "name": "Tidal Wave OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 6.69, "qty30": 87.0, "doh": 67.7, "inv": 453.0, "activeDays30": 13, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZOOSB-WB", "name": "WavBeach OOO Sling Bag", "category": "OOO Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 10.33, "qty30": 124.0, "doh": 46.9, "inv": 485.0, "activeDays30": 12, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZBBS-BK", "name": "Bidri Kaiser Beyond Basic Sling Bag", "category": "Beyond Basic Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.38, "qty30": 57.0, "doh": 197.1, "inv": 468.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZWDB-BRI", "name": "Bristel Weekender Duffel Bag", "category": "Weekender Duffel Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 9.54, "qty30": 229.0, "doh": 63.5, "inv": 606.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZWDB-FM", "name": "FloMotif Weekender Duffel Bag", "category": "Weekender Duffel Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 9.1, "qty30": 182.0, "doh": 107.0, "inv": 974.0, "activeDays30": 20, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZWDB-MMD", "name": "Multicolor Mandala Print Weekender Duffel Bag", "category": "Weekender Duffel Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 9.6, "qty30": 144.0, "doh": 60.5, "inv": 581.0, "activeDays30": 15, "activeDays7": 5, "restocked7": true, "bucket": "Live"}, {"sku": "ZLH-FM", "name": "Flomotif Luna Handbag", "category": "Luna Handbag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.87, "qty30": 73.0, "doh": 110.1, "inv": 536.0, "activeDays30": 15, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZCAWB-TW", "name": "Tidal Wave Carry All Work Bag", "category": "Carry All Work Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 3.32, "qty30": 63.0, "doh": 137.5, "inv": 456.0, "activeDays30": 19, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZCAWB-GW", "name": "Gwalior Weaves Carry All Work Bag", "category": "Carry All Work Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 451.0, "activeDays30": 0, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-FM", "name": "FloMotif Office Essential Bag", "category": "Office Essential Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 489.0, "activeDays30": 0, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-MMD", "name": "Multicolor Mandala Print Office Essential Bag", "category": "Office Essential Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 41.86, "qty30": 1214.0, "doh": 37.0, "inv": 1549.0, "activeDays30": 29, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-PP", "name": "Paisley Print Office Essential Bag", "category": "Office Essential Bag", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 13.0, "qty30": 130.0, "doh": 34.8, "inv": 453.0, "activeDays30": 10, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-LL", "name": "Lattice Lace Office Essential Bag", "category": "Office Essential Bag", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 12.58, "qty30": 239.0, "doh": 99.8, "inv": 1256.0, "activeDays30": 19, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-BRI", "name": "Bristel Office Essential Bag", "category": "Office Essential Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 5.0, "qty30": 10.0, "doh": 226.8, "inv": 1134.0, "activeDays30": 2, "activeDays7": 1, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-KG", "name": "Kutch Gamthi Office Essential Bag", "category": "Office Essential Bag", "badge": "Back in Stock", "rank": 2, "npd": "EPD", "drr": 7.44, "qty30": 67.0, "doh": 60.4, "inv": 450.0, "activeDays30": 9, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZOEST-MGM", "name": "Mughal Motif Office Essential Bag", "category": "Office Essential Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 16.73, "qty30": 251.0, "doh": 36.5, "inv": 611.0, "activeDays30": 15, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZOEST-FL", "name": "FloLov Office Essential Bag", "category": "Office Essential Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 18.44, "qty30": 461.0, "doh": 25.0, "inv": 461.0, "activeDays30": 25, "activeDays7": 3, "restocked7": true, "bucket": "Live"}, {"sku": "ZOEST-TG", "name": "Taj Guldasta Office Essential Bag", "category": "Office Essential Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 10.2, "qty30": 51.0, "doh": 50.4, "inv": 514.0, "activeDays30": 5, "activeDays7": 1, "restocked7": false, "bucket": "Live"}, {"sku": "ZDDP-NC", "name": "Nawabi Couture Dome Daypack", "category": "Dome Daypack", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 2.83, "qty30": 17.0, "doh": 158.8, "inv": 450.0, "activeDays30": 6, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZFSLB-TW01", "name": "Tidal Wave Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Back in Stock", "rank": 1, "npd": "EPD", "drr": 20.76, "qty30": 436.0, "doh": 22.3, "inv": 462.0, "activeDays30": 21, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZFSLB-PP01", "name": "Paisley Print Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 37.83, "qty30": 1135.0, "doh": 64.9, "inv": 2457.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFSLB-IGRD01", "name": "Ikat GreRed Flap Sling Bag", "category": "Flap Sling Bag", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 13.6, "qty30": 408.0, "doh": 40.1, "inv": 545.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-QS", "name": "Qutub Stripes Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.5, "qty30": 12.0, "doh": 308.0, "inv": 462.0, "activeDays30": 8, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZECC-GW", "name": "Gwalior Weaves Eda Card Case", "category": "Eda Card Case", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 2.0, "qty30": 36.0, "doh": 443.5, "inv": 887.0, "activeDays30": 18, "activeDays7": 2, "restocked7": false, "bucket": "Live"}, {"sku": "ZECC-FM", "name": "FloMotif Eda Card Case", "category": "Eda Card Case", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 2.27, "qty30": 50.0, "doh": 308.9, "inv": 702.0, "activeDays30": 22, "activeDays7": 6, "restocked7": true, "bucket": "Live"}, {"sku": "ZECC-MMD", "name": "Multicolor Mandala Print Eda Card Case", "category": "Eda Card Case", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.14, "qty30": 91.0, "doh": 372.5, "inv": 1169.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZECC-BK", "name": "Bidri Kaiser Eda Card Case", "category": "Eda Card Case", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.41, "qty30": 128.0, "doh": 118.5, "inv": 523.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-KG", "name": "Kutch Gamthi Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 7.18, "qty30": 122.0, "doh": 174.3, "inv": 1251.0, "activeDays30": 17, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-FM", "name": "Flomotif Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 10.36, "qty30": 145.0, "doh": 62.6, "inv": 648.0, "activeDays30": 14, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZCZW-TG", "name": "Taj Guldasta Classic Zipper Wallet (CFC)", "category": "Classic Zipper Wallet", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 1.95, "qty30": 37.0, "doh": 231.1, "inv": 450.0, "activeDays30": 19, "activeDays7": 4, "restocked7": false, "bucket": "Force Listed"}, {"sku": "ZAZW-FM", "name": "Arika Zipper Wallet - FloMotif", "category": "Arika Zipper Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.53, "qty30": 76.0, "doh": 185.1, "inv": 469.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZAZW-MMD", "name": "Arika Zipper Wallet - Multicolor Mandala Print", "category": "Arika Zipper Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 1.57, "qty30": 47.0, "doh": 376.0, "inv": 589.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZAZW-KG", "name": "Arika Zipper Wallet - Kutch Gamthi", "category": "Arika Zipper Wallet", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 1.05, "qty30": 20.0, "doh": 570.0, "inv": 600.0, "activeDays30": 19, "activeDays7": 5, "restocked7": false, "bucket": "Live"}, {"sku": "ZPTB", "name": "Personalised Tag (Brown)", "category": "Personalised Tag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 14.53, "qty30": 436.0, "doh": 132.5, "inv": 1925.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZFBX-SMALL", "name": "Zouk Combo Gift Box (Small)", "category": "Gift Box", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 0.67, "qty30": 20.0, "doh": 907.5, "inv": 605.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-RGM", "name": "Royal Green Mogra Print Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 17.86, "qty30": 125.0, "doh": 26.4, "inv": 471.0, "activeDays30": 7, "activeDays7": 0, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZFBX-SMALL-P", "name": "Zouk Combo Gift Box (Small) Personalized", "category": "Gift Box", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.07, "qty30": 2.0, "doh": 20280.0, "inv": 1352.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-TW", "name": "Tidal Wave Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 13.63, "qty30": 368.0, "doh": 41.0, "inv": 559.0, "activeDays30": 27, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-GW", "name": "Gwalior Weaves Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.09, "qty30": 23.0, "doh": 1277.9, "inv": 2672.0, "activeDays30": 11, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZADP-FM", "name": "FloMotif Amalia Daypack", "category": "Amalia Daypack", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 10.62, "qty30": 170.0, "doh": 58.0, "inv": 616.0, "activeDays30": 16, "activeDays7": 2, "restocked7": true, "bucket": "Live"}, {"sku": "ZADP-MMD", "name": "Multicolor Mandala Print Amalia Daypack", "category": "Amalia Daypack", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 18.19, "qty30": 382.0, "doh": 36.3, "inv": 661.0, "activeDays30": 21, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZADP-LL", "name": "Lattice Lace Amalia Daypack", "category": "Amalia Daypack", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 11.62, "qty30": 186.0, "doh": 56.7, "inv": 659.0, "activeDays30": 16, "activeDays7": 1, "restocked7": true, "bucket": "Live"}, {"sku": "ZADP-PP", "name": "Paisley Print Amalia Daypack", "category": "Amalia Daypack", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 11.63, "qty30": 349.0, "doh": 43.0, "inv": 500.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZADP-MGM", "name": "Mughal Motif Amalia Daypack", "category": "Amalia Daypack", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 2.5, "qty30": 60.0, "doh": 486.4, "inv": 1216.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZADP-KMB", "name": "Kashmir Blooms Amalia Daypack", "category": "Amalia Daypack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 36.46, "qty30": 474.0, "doh": 31.6, "inv": 1154.0, "activeDays30": 13, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZADP-BRI", "name": "Bristel Amalia Daypack", "category": "Amalia Daypack", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 4.55, "qty30": 132.0, "doh": 101.3, "inv": 461.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPCH-WB", "name": "WavBeach Classic Utility Pouch", "category": "Classic Utility Pouch", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 8.3, "qty30": 191.0, "doh": 54.4, "inv": 452.0, "activeDays30": 23, "activeDays7": 1, "restocked7": false, "bucket": "Live"}, {"sku": "ZZOSB-JB", "name": "Zoe Sling Bag - Jet Black", "category": "Zoe Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.57, "qty30": 100.0, "doh": 134.4, "inv": 480.0, "activeDays30": 28, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZRKB-KG", "name": "Rhea Kapoor Baguette - Kutch Gamthi", "category": "Rhea Kapoor Baguette", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 0.95, "qty30": 20.0, "doh": 476.7, "inv": 454.0, "activeDays30": 21, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZSW22-TRB", "name": "Tovi Mini Bag - Triund Baroque", "category": "Tovi Mini Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 24.77, "qty30": 545.0, "doh": 19.4, "inv": 481.0, "activeDays30": 22, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZZOSB-KMB", "name": "Zoe Sling Bag - Kashmir Blooms", "category": "Zoe Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 8.89, "qty30": 80.0, "doh": 51.8, "inv": 460.0, "activeDays30": 9, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZSW22-LI", "name": "Tovi Mini Bag - Ladakh Impasto", "category": "Tovi Mini Bag", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 18.4, "qty30": 552.0, "doh": 34.8, "inv": 641.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZIHB-LL", "name": "Ira Handbag Bag - Lattice Lace", "category": "Ira Handbag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.36, "qty30": 59.0, "doh": 192.4, "inv": 454.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSSB25-LI", "name": "Saisha Sling Bag - Ladakh Impasto", "category": "Saisha Sling Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 2.85, "qty30": 77.0, "doh": 393.4, "inv": 1122.0, "activeDays30": 27, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZSSB25-KG", "name": "Saisha Sling Bag - Kutch Gamthi", "category": "Saisha Sling Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 7.13, "qty30": 214.0, "doh": 99.4, "inv": 709.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSMD01-BHR", "name": "Mayra Mini-Daypack - Bhuj Rabari", "category": "Mayra Mini-daypack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.65, "qty30": 79.0, "doh": 97.1, "inv": 451.0, "activeDays30": 17, "activeDays7": 0, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZCSMW-CHAB", "name": "Classic Sleek Men's Wallet - Charcoal Abyss", "category": "Classic Sleek Men's Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 3.4, "qty30": 102.0, "doh": 440.9, "inv": 1499.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCSMW-GOW", "name": "Classic Sleek Men's Wallet - Goan Waves", "category": "Classic Sleek Men's Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 1.6, "qty30": 48.0, "doh": 418.8, "inv": 670.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPBMW-BRI", "name": "Pulse Billfold Men's Wallet - Bristel", "category": "Pulse Billfold Men's Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 4.37, "qty30": 131.0, "doh": 641.7, "inv": 2802.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZPBMW-BI", "name": "Pulse Billfold Men's Wallet - Blaze Inferno", "category": "Pulse Billfold Men's Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 0.53, "qty30": 16.0, "doh": 3924.4, "inv": 2093.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCPMW-JB", "name": "Classic Pro Men's Wallet - Jet Black", "category": "Classic Pro Men's Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 2.72, "qty30": 68.0, "doh": 166.5, "inv": 453.0, "activeDays30": 25, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZCPMW-GW", "name": "Classic Pro Men's Wallet - Gwalior Weaves", "category": "Classic Pro Men's Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.87, "qty30": 86.0, "doh": 1213.6, "inv": 3479.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-FM", "name": "Amalia Backpack (Large) - FloMotif", "category": "Amalia Backpack", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 12.95, "qty30": 285.0, "doh": 37.7, "inv": 488.0, "activeDays30": 22, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-MMD", "name": "Amalia Backpack (Large) - Multicolor Mandala Print", "category": "Amalia Backpack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 28.13, "qty30": 844.0, "doh": 33.0, "inv": 927.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-BK", "name": "Amalia Backpack (Large) - Bidri Kaiser", "category": "Amalia Backpack", "badge": "Fast Selling", "rank": 1, "npd": "EPD", "drr": 12.92, "qty30": 336.0, "doh": 41.8, "inv": 540.0, "activeDays30": 26, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-NC", "name": "Amalia Backpack (Large) - Nawabi Couture", "category": "Amalia Backpack", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 8.52, "qty30": 196.0, "doh": 59.1, "inv": 504.0, "activeDays30": 23, "activeDays7": 3, "restocked7": true, "bucket": "Live"}, {"sku": "ZSBP52-JB", "name": "Amalia Backpack (Large) - Jet Black", "category": "Amalia Backpack", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 21.33, "qty30": 512.0, "doh": 22.5, "inv": 481.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBA13-CC", "name": "Pixi Baguette - Carter Checks", "category": "Pixi Baguette", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 7.9, "qty30": 166.0, "doh": 64.5, "inv": 510.0, "activeDays30": 21, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBA13-FM", "name": "Pixi Baguette - FloMotif", "category": "Pixi Baguette", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 11.86, "qty30": 166.0, "doh": 39.4, "inv": 467.0, "activeDays30": 14, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSW22-CC", "name": "Tovi Mini Bag - Carter Checks", "category": "Tovi Mini Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 21.37, "qty30": 641.0, "doh": 27.6, "inv": 589.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSFP03-MMD", "name": "Freya Fanny Pack - Multicolor Mandala Print", "category": "Freya Fanny Pack", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.2, "qty30": 6.0, "doh": 426.7, "inv": 512.0, "activeDays30": 5, "activeDays7": 5, "restocked7": true, "bucket": "Phased Out"}, {"sku": "ZSBA15-JB", "name": "Kiya Baguette - Jet Black", "category": "Kiya Baguette", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 13.7, "qty30": 411.0, "doh": 33.0, "inv": 452.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZSW13-JB", "name": "Demi Mini Bag - Jet Black", "category": "Demi Mini Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 23.47, "qty30": 704.0, "doh": 27.0, "inv": 633.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSW13-TRB", "name": "Demi Mini Bag - Triund Baroque", "category": "Demi Mini Bag", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 17.17, "qty30": 498.0, "doh": 29.7, "inv": 510.0, "activeDays30": 29, "activeDays7": 6, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBA12-AAB", "name": "Lyra Baguette - Aravalli Abstract", "category": "Lyra Baguette", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.67, "qty30": 25.0, "doh": 270.6, "inv": 451.0, "activeDays30": 15, "activeDays7": 1, "restocked7": false, "bucket": "Live"}, {"sku": "ZSOT10-GG", "name": "Sora Tote Bag - Gir Glades", "category": "Sora Tote Bag", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 3.47, "qty30": 104.0, "doh": 271.2, "inv": 940.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZSBA15-FM", "name": "Kiya Baguette - FloMotif", "category": "Kiya Baguette", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 3.04, "qty30": 76.0, "doh": 148.0, "inv": 450.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Phased Out"}, {"sku": "ZSPC01-GG", "name": "Amica Passport Case - Gir Glades", "category": "Amica Passport Case", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 32.17, "qty30": 933.0, "doh": 34.8, "inv": 1119.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSPO01-BHR", "name": "Clara Cosmetic Pouch - Bhuj Rabari", "category": "Clara Cosmetic Pouch", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 67.92, "qty30": 1698.0, "doh": 23.9, "inv": 1623.0, "activeDays30": 25, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSPO01-LL", "name": "Clara Cosmetic Pouch - Lattice Lace", "category": "Clara Cosmetic Pouch", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 7.5, "qty30": 180.0, "doh": 360.8, "inv": 2706.0, "activeDays30": 24, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZGB-NC", "name": "Special Gift Box - Nawabi Couture", "category": "Gift Box", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 4.0, "qty30": 120.0, "doh": 158.0, "inv": 632.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZGB-MM", "name": "Special Gift Box - Multicolor Mandala", "category": "Gift Box", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 29.79, "qty30": 864.0, "doh": 31.1, "inv": 928.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZGB-KG", "name": "Special Gift Box - Kutch Gamthi", "category": "Gift Box", "badge": "Best Seller", "rank": 3, "npd": "EPD", "drr": 1.63, "qty30": 49.0, "doh": 2066.9, "inv": 3376.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCST-MM", "name": "Coaster - Multicolor Mandala", "category": "Coaster", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 1.56, "qty30": 42.0, "doh": 343.3, "inv": 534.0, "activeDays30": 27, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZCST-CK", "name": "Coaster - Chittoor Kalamkari", "category": "Coaster", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.93, "qty30": 58.0, "doh": 729.3, "inv": 1410.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZAMW-BRI", "name": "Bristel Ace Men's Wallet", "category": "Ace Men's Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 1.88, "qty30": 30.0, "doh": 438.9, "inv": 823.0, "activeDays30": 16, "activeDays7": 3, "restocked7": true, "bucket": "Live"}, {"sku": "ZAMW-CC", "name": "Carter Checks Ace Men's Wallet", "category": "Ace Men's Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 2.79, "qty30": 81.0, "doh": 210.5, "inv": 588.0, "activeDays30": 29, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZRMW-BRI", "name": "Bristel Roy Men's Wallet", "category": "Roy Men's Wallet", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.7, "qty30": 51.0, "doh": 990.0, "inv": 1683.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZRMW-CC", "name": "Carter Checks Roy Men's Wallet", "category": "Roy Men's Wallet", "badge": "Best Seller", "rank": 2, "npd": "EPD", "drr": 0.55, "qty30": 12.0, "doh": 850.7, "inv": 464.0, "activeDays30": 22, "activeDays7": 4, "restocked7": false, "bucket": "Live"}, {"sku": "ZNJB-P-BBT", "name": "Bagru Buti Noor Jewellery Box - Giva", "category": "Noor Jewellery Box - Ply-giva", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 1.77, "qty30": 46.0, "doh": 267.9, "inv": 474.0, "activeDays30": 26, "activeDays7": 3, "restocked7": false, "bucket": "Live"}, {"sku": "ZGB-NC-S", "name": "Marigold gift box", "category": "Gift Box", "badge": "Fast Selling", "rank": 2, "npd": "EPD", "drr": 0.25, "qty30": 3.0, "doh": 6360.0, "inv": 1590.0, "activeDays30": 12, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "SKU02168", "name": "Zouk for Men Gift Box - Small", "category": "Gift Box", "badge": "Unbadged", "rank": 0, "npd": "EPD", "drr": 0.03, "qty30": 1.0, "doh": 16530.0, "inv": 551.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "Z-BG", "name": "Badges - Set of 4", "category": "Gifting Products", "badge": "Best Seller", "rank": 1, "npd": "EPD", "drr": 0.57, "qty30": 17.0, "doh": 2498.8, "inv": 1416.0, "activeDays30": 30, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-B-FM", "name": "FloMotif Amalia Backpack (Black)", "category": "Amalia Backpack", "badge": "New Launch", "rank": 1, "npd": "NPD", "drr": 5.33, "qty30": 80.0, "doh": 215.4, "inv": 1149.0, "activeDays30": 15, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-B-BK", "name": "Bidri Kaiser Amalia Backpack (Black)", "category": "Amalia Backpack", "badge": "New Launch", "rank": 2, "npd": "NPD", "drr": 2.08, "qty30": 27.0, "doh": 362.1, "inv": 752.0, "activeDays30": 13, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-B-NC", "name": "Nawabi Couture Amalia Backpack (Black)", "category": "Amalia Backpack", "badge": "New Launch", "rank": 3, "npd": "NPD", "drr": 1.8, "qty30": 18.0, "doh": 388.9, "inv": 700.0, "activeDays30": 10, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZSBP52-B-GW", "name": "Gwalior Weave Amalia Backpack (Black)", "category": "Amalia Backpack", "badge": "New Launch", "rank": 4, "npd": "NPD", "drr": 1.08, "qty30": 14.0, "doh": 922.1, "inv": 993.0, "activeDays30": 13, "activeDays7": 7, "restocked7": false, "bucket": "Live"}, {"sku": "ZUMB-MSJ", "name": "Umbrella - Munnar Sanjhi", "category": "Umbrella", "badge": "Best Seller", "rank": 1, "npd": "NPD", "drr": 2.0, "qty30": 4.0, "doh": 245.0, "inv": 490.0, "activeDays30": 2, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZUMB-DD", "name": "Umbrella - Dholavira Dastar", "category": "Umbrella", "badge": "Unbadged", "rank": 0, "npd": "NPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 489.0, "activeDays30": 0, "activeDays7": 0, "restocked7": false, "bucket": "Live"}, {"sku": "ZUMB-C-MSJ", "name": "Umbrella Cover - Munnar Sanjhi", "category": "Umbrella Cover", "badge": "Unbadged", "rank": 0, "npd": "NPD", "drr": 0.0, "qty30": 0.0, "doh": 999999.0, "inv": 1269.0, "activeDays30": 10, "activeDays7": 7, "restocked7": false, "bucket": "Live"}];
+
+const BADGE_ORDER = ['Best Seller', 'Fast Selling', 'New Launch', 'Back in Stock', 'Unbadged'];
+const BADGE_COLOR = {
+  'Best Seller':   'var(--chip-bs)',
+  'Fast Selling':  'var(--chip-fs)',
+  'New Launch':    'var(--chip-nl)',
+  'Back in Stock': 'var(--chip-bis)',
+  'Unbadged':      'var(--muted)'
+};
+const badgeClass = b => 'b-' + b.replace(/\s+/g, '-');
+
+function fmtNum(n, decimals) {
+  if (n === null || n === undefined) return '—';
+  if (n >= 999999) return '∞';
+  return n.toLocaleString('en-IN', { maximumFractionDigits: decimals, minimumFractionDigits: 0 });
+}
+
+const CATEGORIES = [...new Set(DATA.map(d => d.category))].sort((a, b) => a.localeCompare(b));
+const CAT_COUNTS = {};
+CATEGORIES.forEach(c => CAT_COUNTS[c] = DATA.filter(d => d.category === c).length);
+const BADGE_COUNTS = {};
+BADGE_ORDER.forEach(b => BADGE_COUNTS[b] = DATA.filter(d => d.badge === b).length);
+const STAGE_ORDER = [...new Set(DATA.map(d => d.npd))].sort((a, b) => a.localeCompare(b));
+const STAGE_COUNTS = {};
+STAGE_ORDER.forEach(s => STAGE_COUNTS[s] = DATA.filter(d => d.npd === s).length);
+
+// ---------- Generic multi-select dropdown ----------
+function buildMultiSelect({ id, label, options, getColor, searchable }) {
+  const root = document.getElementById(id);
+  const selected = new Set(); // empty = "all"
+
+  root.innerHTML = `
+    <button class="msbutton" aria-haspopup="listbox" aria-expanded="false">
+      <span class="lbl">${label}</span><span id="${id}-caption">All</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="mspanel" id="${id}-panel" hidden>
+      ${searchable ? `<div class="mssearch"><input type="text" placeholder="Search ${label.toLowerCase()}…" id="${id}-search"></div>` : ''}
+      <div class="msactions">
+        <button data-act="all">Select all</button>
+        <button data-act="none">Clear</button>
+      </div>
+      <div class="msoptions" id="${id}-options"></div>
+    </div>`;
+
+  const btn = root.querySelector('.msbutton');
+  const panel = root.querySelector('.mspanel');
+  const caption = root.querySelector(`#${id}-caption`);
+  const optionsBox = root.querySelector(`#${id}-options`);
+  const searchInput = searchable ? root.querySelector(`#${id}-search`) : null;
+
+  function renderOptions(filterText) {
+    const ft = (filterText || '').toLowerCase();
+    const opts = options.filter(o => !ft || o.value.toLowerCase().includes(ft));
+    if (!opts.length) {
+      optionsBox.innerHTML = `<div class="msempty">No matches</div>`;
+      return;
+    }
+    optionsBox.innerHTML = opts.map(o => `
+      <label class="msoption">
+        <input type="checkbox" value="${o.value}" ${selected.has(o.value) ? 'checked' : ''}>
+        ${getColor ? `<span class="swatch" style="background:${getColor(o.value)}"></span>` : ''}
+        <span>${o.value}</span>
+        <span class="n">${o.count}</span>
+      </label>`).join('');
+    optionsBox.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) selected.add(cb.value); else selected.delete(cb.value);
+        updateCaption();
+        onChange();
+      });
+    });
+  }
+
+  function updateCaption() {
+    if (selected.size === 0) caption.textContent = 'All';
+    else if (selected.size === options.length) caption.textContent = 'All';
+    else caption.textContent = selected.size;
+    btn.querySelector('.count')?.remove();
+    if (selected.size > 0 && selected.size < options.length) {
+      const span = document.createElement('span');
+      span.className = 'count';
+      span.textContent = selected.size;
+      caption.textContent = '';
+      btn.insertBefore(span, btn.querySelector('svg'));
+    }
+  }
+
+  function openPanel() {
+    panel.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    renderOptions(searchInput ? searchInput.value : '');
+    if (searchInput) searchInput.focus();
+  }
+  function closePanel() {
+    panel.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (panel.hidden) {
+      document.querySelectorAll('.mspanel').forEach(p => { p.hidden = true; });
+      document.querySelectorAll('.msbutton').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      openPanel();
+    } else {
+      closePanel();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!root.contains(e.target)) closePanel();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePanel();
+  });
+
+  root.querySelector('.msactions').addEventListener('click', (e) => {
+    const act = e.target.dataset.act;
+    if (!act) return;
+    if (act === 'all') options.forEach(o => selected.add(o.value));
+    if (act === 'none') selected.clear();
+    updateCaption();
+    renderOptions(searchInput ? searchInput.value : '');
+    onChange();
+  });
+
+  if (searchInput) searchInput.addEventListener('input', () => renderOptions(searchInput.value));
+
+  renderOptions('');
+  updateCaption();
+
+  return { getSelected: () => selected };
+}
+
+let onChange = () => {};
+
+const catMS = buildMultiSelect({
+  id: 'ms-category',
+  label: 'Category',
+  options: CATEGORIES.map(c => ({ value: c, count: CAT_COUNTS[c] })),
+  searchable: true
+});
+const stageMS = buildMultiSelect({
+  id: 'ms-stage',
+  label: 'Stage',
+  options: STAGE_ORDER.map(s => ({ value: s, count: STAGE_COUNTS[s] })),
+  searchable: false
+});
+const badgeMS = buildMultiSelect({
+  id: 'ms-badge',
+  label: 'Badge',
+  options: BADGE_ORDER.map(b => ({ value: b, count: BADGE_COUNTS[b] })),
+  getColor: (b) => `var(--${b === 'Best Seller' ? 'chip-bs' : b === 'Fast Selling' ? 'chip-fs' : b === 'New Launch' ? 'chip-nl' : b === 'Back in Stock' ? 'chip-bis' : 'muted'})`,
+  searchable: false
+});
+const skuSearchEl = document.getElementById('skuSearch');
+const productSearchEl = document.getElementById('productSearch');
+skuSearchEl.addEventListener('input', () => onChange());
+productSearchEl.addEventListener('input', () => onChange());
+
+function rankKey(d) {
+  const order = { 'Best Seller': 0, 'Fast Selling': 1, 'New Launch': 2, 'Back in Stock': 3, 'Unbadged': 4 };
+  return [order[d.badge], -d.drr, d.category, d.sku];
+}
+
+// ---------- Sortable columns ----------
+const COLUMNS = [
+  { key: 'badge',    label: 'Badge',       type: 'text', get: d => order_(d.badge) },
+  { key: 'category', label: 'Category',    type: 'text', get: d => d.category.toLowerCase() },
+  { key: 'sku',       label: 'SKU',         type: 'text', get: d => d.sku.toLowerCase() },
+  { key: 'name',      label: 'Product',     type: 'text', get: d => d.name.toLowerCase() },
+  { key: 'npd',       label: 'Stage',       type: 'text', get: d => d.npd },
+  { key: 'drr',       label: 'DRR/day',     type: 'num' , get: d => d.drr },
+  { key: 'qty30',     label: 'Qty 30d',     type: 'num' , get: d => d.qty30 },
+  { key: 'doh',       label: 'DOH',         type: 'num' , get: d => (d.doh === null ? -1 : d.doh) },
+  { key: 'inv',       label: 'Inv today',   type: 'num' , get: d => d.inv },
+  { key: 'activeDays30', label: 'Active days', type: 'num', get: d => d.activeDays30 },
+];
+function order_(b) {
+  const order = { 'Best Seller': 0, 'Fast Selling': 1, 'New Launch': 2, 'Back in Stock': 3, 'Unbadged': 4 };
+  return order[b];
+}
+
+let sortState = null; // { key, dir: 1 | -1 }
+
+const ARROW = `<span class="arrows">
+  <svg class="up" viewBox="0 0 10 6" fill="currentColor"><path d="M5 0l5 6H0z"/></svg>
+  <svg class="down" viewBox="0 0 10 6" fill="currentColor"><path d="M5 6L0 0h10z"/></svg>
+</span>`;
+
+function renderHead() {
+  const row = document.getElementById('theadRow');
+  row.innerHTML = COLUMNS.map(c => {
+    const cls = ['sortable']; if (c.type === 'num') cls.push('num');
+    return `<th class="${cls.join(' ')}" data-key="${c.key}">${c.label}${ARROW}</th>`;
+  }).join('');
+  row.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      const col = COLUMNS.find(c => c.key === key);
+      if (sortState && sortState.key === key) {
+        sortState.dir = -sortState.dir;
+      } else {
+        sortState = { key, dir: col.type === 'num' ? -1 : 1 }; // numbers: high-to-low first; text: A-Z first
+      }
+      renderTable();
+    });
+  });
+}
+
+function updateHeadIndicators() {
+  document.querySelectorAll('#theadRow th.sortable').forEach(th => {
+    if (sortState && th.dataset.key === sortState.key) {
+      th.setAttribute('data-dir', sortState.dir === 1 ? 'asc' : 'desc');
+    } else {
+      th.removeAttribute('data-dir');
+    }
+  });
+}
+
+function renderTable() {
+  const cats = catMS.getSelected();
+  const stages = stageMS.getSelected();
+  const badges = badgeMS.getSelected();
+  const skuQ = skuSearchEl.value.trim().toLowerCase();
+  const productQ = productSearchEl.value.trim().toLowerCase();
+  const filtered = DATA.filter(d =>
+    (cats.size === 0 || cats.has(d.category)) &&
+    (stages.size === 0 || stages.has(d.npd)) &&
+    (badges.size === 0 || badges.has(d.badge)) &&
+    (!skuQ || d.sku.toLowerCase().includes(skuQ)) &&
+    (!productQ || d.name.toLowerCase().includes(productQ))
+  ).sort((a, b) => {
+    if (sortState) {
+      const col = COLUMNS.find(c => c.key === sortState.key);
+      const va = col.get(a), vb = col.get(b);
+      let cmp = va < vb ? -1 : va > vb ? 1 : 0;
+      if (cmp !== 0) return cmp * sortState.dir;
+      return a.sku.localeCompare(b.sku); // stable tiebreak
+    }
+    const ka = rankKey(a), kb = rankKey(b);
+    for (let i = 0; i < ka.length; i++) {
+      if (ka[i] < kb[i]) return -1;
+      if (ka[i] > kb[i]) return 1;
+    }
+    return 0;
+  });
+
+  updateHeadIndicators();
+  document.getElementById('resultCount').textContent = `${filtered.length} of ${DATA.length} SKUs`;
+  document.getElementById('emptyState').style.display = filtered.length ? 'none' : 'block';
+  document.querySelector('.tablescroll').style.display = filtered.length ? '' : 'none';
+
+  document.getElementById('tbody').innerHTML = filtered.map(d => `
+    <tr>
+      <td>${d.badge === 'Unbadged' ? '<span class="b-Unbadged">—</span>' : `<span class="badge-chip ${badgeClass(d.badge)}"><span class="dot"></span>${d.badge}${d.rank ? ' #' + d.rank : ''}</span>`}</td>
+      <td class="cat">${d.category}</td>
+      <td class="sku-code">${d.sku}</td>
+      <td class="name" title="${d.name}">${d.name}</td>
+      <td><span class="npd-pill">${d.npd}</span></td>
+      <td class="num">${fmtNum(d.drr, 1)}</td>
+      <td class="num">${fmtNum(d.qty30, 0)}</td>
+      <td class="num">${fmtNum(d.doh, 1)}</td>
+      <td class="num">${fmtNum(d.inv, 0)}</td>
+      <td class="num">${d.activeDays30}/30</td>
+    </tr>`).join('');
+}
+
+onChange = renderTable;
+renderHead();
+renderTable();
+</script>
