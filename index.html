@@ -30,6 +30,9 @@
     --chip-tr:       #008300;
     --chip-tr-tint:  #ddf0d8;
     --chip-tr-ink:   #045c00;
+    --chip-rm:       #e34948;
+    --chip-rm-tint:  #fbe2e1;
+    --chip-rm-ink:   #8a1616;
     --shadow:        0 1px 2px rgba(33,28,26,0.06), 0 6px 20px -8px rgba(33,28,26,0.18);
     --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -66,6 +69,9 @@
       --chip-tr:       #1f9e1f;
       --chip-tr-tint:  #17330f;
       --chip-tr-ink:   #5fd158;
+      --chip-rm:       #e66767;
+      --chip-rm-tint:  #3a1414;
+      --chip-rm-ink:   #f5a3a2;
       --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
     }
   }
@@ -99,6 +105,9 @@
     --chip-tr:       #1f9e1f;
     --chip-tr-tint:  #17330f;
     --chip-tr-ink:   #5fd158;
+    --chip-rm:       #e66767;
+    --chip-rm-tint:  #3a1414;
+    --chip-rm-ink:   #f5a3a2;
     --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
   }
 
@@ -290,6 +299,36 @@
   .b-bis { background: var(--chip-bis-tint); color: var(--chip-bis-ink); }
   .b-bis .dot { background: var(--chip-bis); }
   .b-unbadged { color: var(--muted); font-size: 12px; }
+  .b-added   { background: var(--chip-tr-tint); color: var(--chip-tr-ink); }
+  .b-added .dot   { background: var(--chip-tr); }
+  .b-removed { background: var(--chip-rm-tint); color: var(--chip-rm-ink); }
+  .b-removed .dot { background: var(--chip-rm); }
+  .b-updated { background: var(--chip-bs-tint); color: var(--chip-bs-ink); }
+  .b-updated .dot { background: var(--chip-bs); }
+  .b-nochange { color: var(--muted); font-size: 12px; }
+
+  /* ---------- Tabs ---------- */
+  .tabbar { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .tabbtn {
+    font-family: var(--sans); font-size: 13.5px; font-weight: 600; color: var(--muted);
+    background: none; border: none; padding: 10px 4px 12px; margin-right: 20px; cursor: pointer;
+    border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 7px;
+  }
+  .tabbtn:hover { color: var(--ink-2); }
+  .tabbtn.active { color: var(--ink); border-bottom-color: var(--accent); }
+  .tabbadge {
+    font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px;
+    background: var(--chip-bs-tint); color: var(--chip-bs-ink);
+  }
+  .changesIntro { margin-bottom: 14px; }
+  .changesIntro p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.55; max-width: 760px; }
+  .changeStats { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .statpill {
+    display: flex; align-items: baseline; gap: 6px; padding: 10px 16px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .statpill .n { font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--ink); }
+  .statpill .l { font-size: 12px; color: var(--muted); }
 
   .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
   .empty .big { font-size: 15px; color: var(--ink-2); margin-bottom: 4px; }
@@ -304,6 +343,13 @@
     <div class="mark"><span class="tag">Zouk</span><h1>Category Badge Dashboard</h1></div>
     <div class="meta">Data as of 31 Aug 2026 · 226 SKUs · 56 categories</div>
   </div>
+
+  <div class="tabbar" role="tablist">
+    <button class="tabbtn active" id="tab-dashboard" data-view="dashboard" role="tab" aria-selected="true">Badge Dashboard</button>
+    <button class="tabbtn" id="tab-changes" data-view="changes" role="tab" aria-selected="false">What&rsquo;s Changed<span class="tabbadge" id="changesTabCount"></span></button>
+  </div>
+
+  <div id="view-dashboard">
 
   <div class="filterbar">
     <div class="msfilter" id="ms-category"></div>
@@ -331,6 +377,31 @@
     <div class="empty" id="emptyState" style="display:none;">
       <div class="big">No SKUs match these filters</div>
       <div>Try selecting more categories or badges.</div>
+    </div>
+  </div>
+
+  </div>
+
+  <div id="view-changes" style="display:none;">
+    <div class="changesIntro">
+      <p>Comparing this build to the previously published dashboard. Both reflect inventory data through <strong>31 Aug 2026</strong> — this refresh reprocessed a corrected/extended sales export for the same period, which shifted some SKUs&rsquo; 7-day and 30-day velocity enough to change their badge.</p>
+    </div>
+    <div class="changeStats" id="changeStats"></div>
+    <div class="filterbar">
+      <div class="msfilter" id="ms-changetype"></div>
+      <div class="spacer"></div>
+      <div class="resultcount" id="changeResultCount"></div>
+    </div>
+    <div class="tablecard">
+      <div class="tablescroll">
+        <table class="sku-table" id="changesTable">
+          <thead><tr id="changesHeadRow"></tr></thead>
+          <tbody id="changesTbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="changesEmptyState" style="display:none;">
+        <div class="big">No changes match this filter</div>
+      </div>
     </div>
   </div>
 
@@ -612,7 +683,104 @@ function renderTable() {
     </tr>`).join('');
 }
 
-onChange = renderTable;
 renderHead();
 renderTable();
+
+// ================= Changes tab =================
+const CHANGES_PAYLOAD = {"summary": {"added": 0, "removed": 0, "updated": 19, "unchanged": 207, "prevTotal": 226, "currTotal": 226}, "changes": [{"type": "Updated", "sku": "ZADP-FM", "name": "FloMotif Amalia Daypack", "category": "Amalia Daypack", "prevBadge": "Fast Selling", "currBadge": "Best Seller"}, {"type": "Updated", "sku": "ZADP-LL", "name": "Lattice Lace Amalia Daypack", "category": "Amalia Daypack", "prevBadge": "Best Seller", "currBadge": "Fast Selling"}, {"type": "Updated", "sku": "ZBOB-BRI", "name": "Bristel Office Backpack", "category": "Office Backpack", "prevBadge": "Trending", "currBadge": "Unbadged"}, {"type": "Updated", "sku": "ZBT01-BK001", "name": "Bidri Kaiser Baguette", "category": "Baguette", "prevBadge": "Unbadged", "currBadge": "Fast Selling"}, {"type": "Updated", "sku": "ZBT01-KG001", "name": "Kutch Gamthi Baguette", "category": "Baguette", "prevBadge": "Fast Selling", "currBadge": "Unbadged"}, {"type": "Updated", "sku": "ZFSLB-FM01", "name": "FloMotif Flap Sling Bag", "category": "Flap Sling Bag", "prevBadge": "Fast Selling", "currBadge": "Trending"}, {"type": "Updated", "sku": "ZFSLB-GW01", "name": "Gwalior Weaves Flap Sling Bag", "category": "Flap Sling Bag", "prevBadge": "Best Seller", "currBadge": "Fast Selling"}, {"type": "Updated", "sku": "ZFSLB-KB01", "name": "Kovil Blue Flap Sling Bag", "category": "Flap Sling Bag", "prevBadge": "Unbadged", "currBadge": "Trending"}, {"type": "Updated", "sku": "ZFSLB-NC", "name": "Nawabi Couture Flap Sling Bag", "category": "Flap Sling Bag", "prevBadge": "Zouk's #3", "currBadge": "Best Seller"}, {"type": "Updated", "sku": "ZLH-BRI", "name": "Bristel Luna Handbag", "category": "Luna Handbag", "prevBadge": "Fast Selling", "currBadge": "Back in Stock"}, {"type": "Updated", "sku": "ZLH-KOB", "name": "Kovil Blue Luna Handbag", "category": "Luna Handbag", "prevBadge": "Back in Stock", "currBadge": "Fast Selling"}, {"type": "Updated", "sku": "ZOB01-CBK-080", "name": "Chittoor Blue Kalamkari Women's Office Bag", "category": "Women's Office Bag", "prevBadge": "Trending", "currBadge": "Unbadged"}, {"type": "Updated", "sku": "ZOB01-PP-060", "name": "Paisley Print Women's Office Bag", "category": "Women's Office Bag", "prevBadge": "Trending", "currBadge": "Unbadged"}, {"type": "Updated", "sku": "ZPCH-FM", "name": "Flomotif Classic Utility Pouch", "category": "Classic Utility Pouch", "prevBadge": "Fast Selling", "currBadge": "Best Seller"}, {"type": "Updated", "sku": "ZPCH-KG", "name": "Kutch Gamthi Classic Utility Pouch", "category": "Classic Utility Pouch", "prevBadge": "Best Seller", "currBadge": "Fast Selling"}, {"type": "Updated", "sku": "ZPCH-QS", "name": "Qutub Stripes Classic Utility Pouch", "category": "Classic Utility Pouch", "prevBadge": "Back in Stock", "currBadge": "Unbadged"}, {"type": "Updated", "sku": "ZSBP52-B-FM", "name": "FloMotif Amalia Backpack (Black)", "category": "Amalia Backpack", "prevBadge": "Trending", "currBadge": "New Launch"}, {"type": "Updated", "sku": "ZSBP52-B-NC", "name": "Nawabi Couture Amalia Backpack (Black)", "category": "Amalia Backpack", "prevBadge": "Trending", "currBadge": "New Launch"}, {"type": "Updated", "sku": "ZSPO01-BHR", "name": "Clara Cosmetic Pouch - Bhuj Rabari", "category": "Clara Cosmetic Pouch", "prevBadge": "Best Seller", "currBadge": "Zouk's #3"}]};
+const CHANGES = CHANGES_PAYLOAD.changes;
+const CHANGE_SUMMARY = CHANGES_PAYLOAD.summary;
+
+const CHANGE_TYPE_ORDER = ['Added', 'Removed', 'Updated'];
+function changeTypeClass(t) { return 'b-' + t.toLowerCase(); }
+
+document.getElementById('changesTabCount').textContent = CHANGES.length ? CHANGES.length : '';
+
+const statDefs = [
+  { key: 'added',     label: 'Added' },
+  { key: 'removed',   label: 'Removed' },
+  { key: 'updated',   label: 'Badge updated' },
+  { key: 'unchanged', label: 'Unchanged' },
+];
+document.getElementById('changeStats').innerHTML = statDefs.map(s =>
+  `<div class="statpill"><span class="n">${CHANGE_SUMMARY[s.key]}</span><span class="l">${s.label}</span></div>`
+).join('');
+
+const CT_COUNTS = {};
+CHANGE_TYPE_ORDER.forEach(t => CT_COUNTS[t] = CHANGES.filter(c => c.type === t).length);
+const changeTypeMS = buildMultiSelect({
+  id: 'ms-changetype',
+  label: 'Change',
+  options: CHANGE_TYPE_ORDER.map(t => ({ value: t, count: CT_COUNTS[t] })),
+  getColor: (t) => t === 'Added' ? 'var(--chip-tr)' : t === 'Removed' ? 'var(--chip-rm)' : 'var(--chip-bs)',
+  searchable: false
+});
+
+const CHANGE_COLUMNS = [
+  { key: 'type',      label: 'Change',        get: c => c.type },
+  { key: 'category',  label: 'Category',      get: c => c.category },
+  { key: 'sku',       label: 'SKU',           get: c => c.sku },
+  { key: 'name',      label: 'Product',       get: c => c.name },
+  { key: 'prevBadge', label: 'Previous badge',get: c => c.prevBadge },
+  { key: 'currBadge', label: 'Current badge', get: c => c.currBadge },
+];
+
+function renderChangesHead() {
+  const row = document.getElementById('changesHeadRow');
+  row.innerHTML = CHANGE_COLUMNS.map(c => `<th>${c.label}</th>`).join('');
+}
+
+function badgeCellHtml(b) {
+  if (b === null || b === undefined) return '<span class="b-unbadged">—</span>';
+  if (b === 'Unbadged') return '<span class="b-unbadged">—</span>';
+  return `<span class="badge-chip ${badgeClass(b)}"><span class="dot"></span>${b}</span>`;
+}
+
+function renderChangesTable() {
+  const selectedTypes = changeTypeMS.getSelected();
+  const filtered = CHANGES.filter(c => selectedTypes.size === 0 || selectedTypes.has(c.type));
+  const sorted = [...filtered].sort((a, b) => {
+    const oa = CHANGE_TYPE_ORDER.indexOf(a.type), ob = CHANGE_TYPE_ORDER.indexOf(b.type);
+    if (oa !== ob) return oa - ob;
+    if (a.category !== b.category) return a.category.localeCompare(b.category);
+    return a.sku.localeCompare(b.sku);
+  });
+
+  document.getElementById('changeResultCount').textContent = `${sorted.length} of ${CHANGES.length} changes`;
+  document.getElementById('changesEmptyState').style.display = sorted.length ? 'none' : 'block';
+  document.querySelector('#view-changes .tablescroll').style.display = sorted.length ? '' : 'none';
+
+  document.getElementById('changesTbody').innerHTML = sorted.map(c => `
+    <tr>
+      <td><span class="badge-chip ${changeTypeClass(c.type)}"><span class="dot"></span>${c.type}</span></td>
+      <td class="cat">${c.category}</td>
+      <td class="sku-code">${c.sku}</td>
+      <td class="name" title="${c.name}">${c.name}</td>
+      <td>${badgeCellHtml(c.prevBadge)}</td>
+      <td>${badgeCellHtml(c.currBadge)}</td>
+    </tr>`).join('');
+}
+
+renderChangesHead();
+renderChangesTable();
+
+// single shared dispatcher: any filter change (dashboard or changes tab) refreshes both tables
+onChange = () => { renderTable(); renderChangesTable(); };
+
+// ---- tab switching ----
+const tabDashboardBtn = document.getElementById('tab-dashboard');
+const tabChangesBtn = document.getElementById('tab-changes');
+const viewDashboard = document.getElementById('view-dashboard');
+const viewChanges = document.getElementById('view-changes');
+function showView(view) {
+  const isDash = view === 'dashboard';
+  viewDashboard.style.display = isDash ? '' : 'none';
+  viewChanges.style.display = isDash ? 'none' : '';
+  tabDashboardBtn.classList.toggle('active', isDash);
+  tabChangesBtn.classList.toggle('active', !isDash);
+  tabDashboardBtn.setAttribute('aria-selected', String(isDash));
+  tabChangesBtn.setAttribute('aria-selected', String(!isDash));
+}
+tabDashboardBtn.addEventListener('click', () => showView('dashboard'));
+tabChangesBtn.addEventListener('click', () => showView('changes'));
 </script>
